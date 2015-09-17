@@ -3,5 +3,5 @@
   file: path={{ hadoop_var_prefix }}/jnedits state=directory owner={{ hadoop_user }} group={{ hadoop_user }} mode=0700
 
 - name: put /etc/eye/hdfs-journalnode.rb
-  template: src=hdfs-journalnode.rb dest=/etc/eye/hdfs-journalnode-{{ env_name }}.rb
+  template: src=hdfs-journalnode.rb dest=/etc/eye/hdfs-journalnode-{{ env_name }}.rb backup=yes
   notify: reload eye
