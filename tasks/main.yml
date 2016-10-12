@@ -1,7 +1,18 @@
 ---
 - name: make {{ hadoop_var_prefix }}/jnedits
   file: path={{ hadoop_var_prefix }}/jnedits state=directory owner={{ hadoop_user }} group={{ hadoop_user }} mode=0700
+  when: "not (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04')"
 
 - name: put /etc/eye/hdfs-journalnode.rb
   template: src=hdfs-journalnode.rb dest=/etc/eye/hdfs-journalnode-{{ env_name }}.rb backup=yes
   notify: reload eye
+  when: "not (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04')"
+
+- name: put systemd unit file to its destination
+  template: src=hdfs-journalnode.service dest=/etc/systemd/system/hdfs-journalnode-{{ env_name }}.service owner=root group=root mode=0644
+  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'"
+  notify: systemctl daemon-reload
+
+- name: enable hdfs-journalnode service
+  service: name=hdfs-journalnode-{{ env_name }} enabled=yes state=started
+  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04'"

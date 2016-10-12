@@ -1,3 +1,6 @@
 ---
 - name: reload eye
   command: bash -c "source /usr/local/rvm/scripts/rvm && eye l /etc/eye/apps.eye"
+
+- name: systemctl daemon-reload
+  shell: systemctl daemon-reload

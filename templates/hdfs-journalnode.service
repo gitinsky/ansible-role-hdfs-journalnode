@@ -1,0 +1,16 @@
+[Unit]
+Description=HDFS Journalnode Service
+Documentation=https://github.com/gitinsky/ansible-role-hdfs-journalnode
+
+[Service]
+Type=simple
+User={{ hadoop_user }}
+Group={{ hadoop_user }}
+ExecStart={{ hadoop_distr_prefix }}/bin/hdfs journalnode
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+Alias=hdfs-journalnode-{{ env_name }}.service
