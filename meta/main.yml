@@ -1,4 +1,4 @@
 ---
 dependencies:
-  - { role: eye, when: ansible_os_family != 'Elbrus' }
+  - { role: eye, when: "(not (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '16.04')) and (ansible_os_family != 'Elbrus')" }
   - { role: runit, runit_service_name: "hdfs-journalnode",  runit_service_user: "{{ hadoop_user }}", runit_service_command: "{{ hadoop_distr_prefix }}/bin/journalnode_start.sh", runit_service_params: "", runit_service_kill: "{{ hdfs_journalnode_kill }}", runit_allow_user_control: yes, tags: ['runit'], when: ansible_os_family == 'Elbrus' }
