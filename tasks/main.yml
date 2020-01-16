@@ -10,16 +10,16 @@
 - name: put /etc/eye/hdfs-journalnode.rb
   template: src=hdfs-journalnode.rb dest=/etc/eye/hdfs-journalnode-{{ env_name }}.rb backup=yes
   notify: reload eye
-  when: "(not (ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>='))) and (ansible_os_family != 'Elbrus')"
+  when: "(not (ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>='))) and (ansible_os_family != 'Elbrus')"
 
 - name: put systemd unit file to its destination
   template: src=hdfs-journalnode.service dest=/etc/systemd/system/hdfs-journalnode-{{ env_name }}.service owner=root group=root mode=0644
-  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>=')"
+  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>=')"
   notify: systemctl daemon-reload
 
 - name: enable hdfs-journalnode service
   service: name=hdfs-journalnode-{{ env_name }} enabled=yes state=started
-  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version|version_compare('16.04', '>=')"
+  when: "ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('16.04', '>=')"
 
 - name: put {{ hadoop_distr_prefix }}/bin/journalnode_start.sh
   template: src=journalnode_start.sh dest={{ hadoop_distr_prefix }}/bin/journalnode_start.sh
